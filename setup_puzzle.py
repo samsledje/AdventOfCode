@@ -4,11 +4,10 @@ from pathlib import Path
 
 year, day, part = sys.argv[1:]
 os.makedirs(f"{year}/d{day}p{part}", exist_ok=True)
-Path(f"{year}/d{day}p{part}/code.py").touch()
-Path(f"{year}/d{day}p{part}/input.txt").touch()
-Path(f"{year}/d{day}p{part}/toy.txt").touch()
 
-if part == "2":
+if (part == "2") and (Path(f"{year}/d{day}p1/code.py").exists()) and (not Path(f"{year}/d{day}p2/code.py").exists()):
+    print("Copying code, input, and toy from part 1 to part 2")
+    
     # copy code, input, and toy from part 1
     with open(f"{year}/d{day}p1/code.py") as f:
         code = f.read()
@@ -23,3 +22,7 @@ if part == "2":
         f.write(data)
     with open(f"{year}/d{day}p2/toy.txt", "w") as f:
         f.write(toy)
+
+Path(f"{year}/d{day}p{part}/code.py").touch()
+Path(f"{year}/d{day}p{part}/input.txt").touch()
+Path(f"{year}/d{day}p{part}/toy.txt").touch()
