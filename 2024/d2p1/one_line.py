@@ -1,1 +1,1 @@
-import sys;import numpy as n;print(sum(map(lambda x:(lambda d:((d<0).all()|(d>0).all())&((max(n.abs(d))<=3)&(min(n.abs(d)) >= 1)))(n.diff(n.array(x.split()).astype(int))),open(sys.argv[1]))))
+import sys,numpy as n;print(sum(map(lambda x:(lambda d:(all(d<0)|all(d>0))&((max(abs(d))<=3)&(min(abs(d)) >= 1)))(n.diff(n.array(x.split(),int))),open(sys.argv[1]))))
