@@ -3,9 +3,8 @@ import numpy as np
 
 def checksum(arr):
     pos = np.arange(len(arr))
-    print(pos)
-
-    checksum = np.sum(arr * pos)
+    mult_pos = (arr * pos)
+    checksum = np.sum(mult_pos[np.where(mult_pos >= 0)])
 
     return checksum
 
@@ -56,7 +55,10 @@ if __name__ == "__main__":
     # print(free_space)
     # print(block_id)
 
-    cd = compress(block_size, free_space, block_id)
+    # cd = compress(block_size, free_space, block_id)
+    cd = np.array([0,0,9,9,2,1,1,1,7,7,7,-1,4,4,-1,3,3,3,-1,-1,-1,-1,5,5,5,5,-1,6,6,6,6,-1,-1,-1,-1,-1,8,8,8,8,-1,-1])
     # print(cd)
+
+
     print(checksum(cd))
 

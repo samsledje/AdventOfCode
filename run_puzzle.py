@@ -27,6 +27,8 @@ if __name__ == "__main__":
 
     cmd = f"python {code} {inp}"
 
-    proc = sp.Popen(cmd.split(), stdout=sp.PIPE)
+    proc = sp.Popen(cmd.split(), stdout=sp.PIPE, stderr=sp.PIPE)
     out,err = proc.communicate()
     print(out.decode())
+    if err is not None:
+        print(err.decode())
