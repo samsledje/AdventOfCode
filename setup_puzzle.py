@@ -8,6 +8,10 @@ except ValueError:
     print("Usage: python setup_puzzle.py [year] [day] [part]")
     sys.exit(0)
 
+assert part in ("1", "2"), "part must be '1' or '2'"
+assert day.isdigit() and (1 <= int(day) <= 25), "day must be between 1 and 25"
+assert year.isdigit(), "Year must be a number"
+
 year_dir = Path(year)
 part_dir = Path(f"{year}/d{day}p{part}")
 code_path = part_dir / "code.py"
