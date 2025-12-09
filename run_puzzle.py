@@ -39,4 +39,4 @@ if __name__ == "__main__":
     proc.stdout.close()
     return_code = proc.wait()
     if return_code:
-        raise sp.CalledProcessError(return_code, cmd)
+        sys.exit(return_code)
