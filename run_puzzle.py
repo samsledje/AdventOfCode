@@ -25,10 +25,18 @@ if __name__ == "__main__":
     assert code.exists(), f"{code} does not exist"
     assert inp.exists(), f"{inp} does not exist"
 
-    cmd = f"python {code} {inp}"
+    cmd = f"python -u {code} {inp}"
 
-    proc = sp.Popen(cmd.split(), stdout=sp.PIPE, stderr=sp.PIPE)
-    out, err = proc.communicate()
-    print(out.decode(), end="")
-    if err is not None:
-        print(err.decode())
+    proc = sp.Popen(
+        cmd.split(),
+        stdout=sp.PIPE,
+        stderr=sp.STDOUT,
+        universal_newlines=True,
+        bufsize=1,
+    )
+    for line in iter(proc.stdout.readline, ""):
+        print(line, end="", flush=True)
+    proc.stdout.close()
+    return_code = proc.wait()
+    if return_code:
+        raise sp.CalledProcessError(return_code, cmd)
