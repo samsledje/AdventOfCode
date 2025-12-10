@@ -4,11 +4,11 @@ import numpy as np
 MAX_DETPH = 12
 
 
-def compute_array_joltage(arr: np.array) -> int:
+def compute_array_joltage(arr: np.ndarray) -> int:
     return sum(x * 10**i for i, x in enumerate(reversed(arr)))
 
 
-def recurse_next_best(arr: np.array, depth: int):
+def recurse_next_best(arr: np.ndarray, depth: int):
     if depth > MAX_DETPH:
         return np.array([])
 
@@ -40,7 +40,7 @@ def recurse_next_best(arr: np.array, depth: int):
     raise RecursionError()
 
 
-def compute_bank_joltage(bank: np.array) -> int:
+def compute_bank_joltage(bank: np.ndarray) -> int:
     # print(f"Input bank={bank}")
     assert len(bank) > MAX_DETPH
 

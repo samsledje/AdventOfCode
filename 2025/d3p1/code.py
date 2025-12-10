@@ -6,7 +6,7 @@ def compute_pair_joltage(a: int, b: int) -> int:
     return (a * 10) + b
 
 
-def compute_bank_joltage(bank: np.array) -> int:
+def compute_bank_joltage(bank: np.ndarray) -> int:
     # print(bank)
 
     pnt_a = np.argmax(bank[:-1])

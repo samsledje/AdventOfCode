@@ -11,22 +11,22 @@ RIGHT_SHIFT = [0, 1]
 LEFT_SHIFT = [0, -1]
 
 
-def print_manifold(manifold: np.array, end="#"):
+def print_manifold(manifold: np.ndarray, end="#"):
     assert manifold.shape[0] >= 1
     for row in manifold:
         print("".join([NUM_MAP[n] for n in row]))
     print(end * len(row))
 
 
-def get_positions(manifold: np.array, char: str):
+def get_positions(manifold: np.ndarray, char: str):
     return np.vstack(np.where(manifold == CHAR_MAP[char])).T
 
 
-def assign_manifold(manifold: np.array, mask: np.array, char: str):
+def assign_manifold(manifold: np.ndarray, mask: np.ndarray, char: str):
     manifold[*get_positions(mask, "M").T] = CHAR_MAP[char]
 
 
-def create_mask(manifold: np.array, positions: np.array):
+def create_mask(manifold: np.ndarray, positions: np.ndarray):
     mask = np.zeros_like(manifold)
     for pos in positions:
         if (0 <= pos[0] < manifold.shape[0]) and (0 <= pos[1] < manifold.shape[1]):
@@ -34,7 +34,7 @@ def create_mask(manifold: np.array, positions: np.array):
     return mask
 
 
-def manifold_step(manifold: np.array):
+def manifold_step(manifold: np.ndarray):
     start_pos = get_positions(manifold, "S")
     splitter_pos = get_positions(manifold, "^")
     beam_pos = get_positions(manifold, "|")

@@ -2,7 +2,7 @@ import sys
 import numpy as np
 
 
-def check_fresh(x: int, ranges: np.array):
+def check_fresh(x: int, ranges: np.ndarray):
     gt_range = x >= ranges[:, 0]
     lt_range = x <= ranges[:, 1]
     in_range = gt_range & lt_range
