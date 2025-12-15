@@ -1,19 +1,7 @@
 import sys
 import re
 import numpy as np
-
-
-def str_binary(number: int, length: int):
-    return bin(number)[2:].zfill(length)
-
-
-def print_memory(memory: dict[tuple[int, int]]):
-    max_len = max([len(bin(i[0])[2:]) for i in memory.keys()])
-    for (init_state, button), end_state in memory.items():
-        start_repr = str_binary(init_state, max_len)
-        button_repr = str_binary(button, max_len)
-        end_repr = str_binary(end_state, max_len)
-        print(f"{start_repr} + {button_repr} -> {end_repr}")
+import networkx as nx
 
 
 def build_button_mask(b, nmax):
@@ -25,40 +13,28 @@ def build_button_mask(b, nmax):
     return int(mask, 2)
 
 
-def update_lights(lights: int, button: int, verbose: bool = False):
-    if verbose:
-        print("+")
-        print(bin(button))
-    return lights ^ button
-
-
 if __name__ == "__main__":
     matcher = re.compile(r"^\[(.*)\] (\((?:\d+,*)+\).*)* \{(.*)\}$")
 
-    machines = []
+    total_shortest_dist = 0
 
     with open(sys.argv[1], "r") as f:
         for line in f:
             match = re.match(matcher, line)
             lights = match.group(1).replace(".", "0").replace("#", "1")
-            nlights = len(lights)
-            buttons = [build_button_mask(b, nlights) for b in match.group(2).split()]
+            n_lights = len(lights)
+            buttons = [build_button_mask(b, n_lights) for b in match.group(2).split()]
             target_light = int(lights, 2)
             joltage = np.array([int(i) for i in match.group(3).split(",")])
-            machines.append((lights, buttons, joltage))
 
-            # print(indicators)
-            # print(buttons)
-            # print(joltage)
+            edges = []
+            for source in range(2**n_lights):
+                for button in buttons:
+                    target = source ^ button
+                    edges.append([source, target])
 
-    for i, (lights, buttons, joltage) in enumerate(machines):
-        print(f"### MACHINE {i} ###")
-        memory = {}
-        old_lights = 0
+            graph = nx.from_edgelist(edges)
+            shortest_dist = nx.shortest_path_length(graph, 0, target_light)
+            total_shortest_dist += shortest_dist
 
-        for b in buttons:
-            new_lights = update_lights(old_lights, b)
-            memory[(old_lights, b)] = new_lights
-            old_lights = new_lights
-
-        print_memory(memory)
+        print(total_shortest_dist)
